@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk git status:*)",
+      "Bash(rtk git diff:*)",
+      "Bash(rtk git log:*)",
+      "Bash(rtk git add:*)",
+      "Bash(rtk git commit:*)",
+      "Bash(rtk git push:*)",
+      "Bash(rtk git pull:*)",
+      "Bash(rtk git branch:*)",
+      "Bash(rtk docker ps:*)",
+      "Bash(rtk docker logs:*)",
+      "Bash(rtk err pnpm build:*)",
+      "Bash(rtk tsc:*)",
+      "Bash(rtk lint:*)",
+      "Bash(rtk vitest:*)",
+      "Bash(rtk pnpm list:*)",
+      "Bash(next dev:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '## Git'; git branch --show-current; git status --short | head -10; echo '## Docker'; docker ps --filter name=presidio --format '{{.Names}} {{.Status}}'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.(ts|tsx)$' | xargs pnpm prettier --write 2>/dev/null; exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}
