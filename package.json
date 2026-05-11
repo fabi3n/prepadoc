@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "presidio:up": "docker compose up -d",
+    "presidio:down": "docker compose down"
   },
   "dependencies": {
     "@faker-js/faker": "^10.4.0",
